@@ -1,0 +1,12 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "zisi"
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/album"
+  status = 200
+  force = true
