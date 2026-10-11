@@ -1,7 +1,7 @@
 const crypto = require('node:crypto');
 const DAYS = 7 * 24 * 60 * 60;
 const secret = process.env.SESSION_SECRET;
-const password = process.env.FAMILY_PASSWORD;
+const password = process.env.ALBUM_PASSWORD;
 const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sign = v => crypto.createHmac('sha256', secret).update(v).digest('hex');
 function authenticated(headers) {
@@ -22,7 +22,7 @@ const login = error => page(`<span class="pill">🎁 ¡Tenemos una sorpresa!</sp
 const inside = page(`<span class="pill">🎉 ¡Sorpresa desbloqueada!</span><h1>¡Felices 57,<br>Montse!</h1><h2>31 años juntos… ¡y lo que nos queda! 💃</h2><div class="stars">🌸 🎂 💕 🐾 🌺</div><p>De las recetas que nos hacen felices a esos arreglos que solo tú sabes hacer. De nuestras risas a todos los recuerdos que seguimos construyendo.</p><p class="love">¡Te queremos muchísimo!</p><p>Antonio, Raquel, Mar, Sofía y Mía 🐾</p><button class="btn" onclick="celebrate()">¡Que llueva confeti! 🎊</button><p><small>Próximamente: nuestro álbum interactivo de recuerdos.</small></p><form method="post" action="/salir"><button type="submit" style="background:none;border:0;text-decoration:underline;cursor:pointer;color:#6240a2">Cerrar sesión</button></form><script>function celebrate(){const c=document.getElementById('confetti');c.innerHTML='';for(let i=0;i<100;i++){let x=document.createElement('i');x.className='piece';x.style.left=Math.random()*100+'%';x.style.background=['#ef3b91','#ffd342','#54cdb5','#8861c7'][i%4];x.style.animationDuration=2+Math.random()*3+'s';x.style.animationDelay=Math.random()*.8+'s';c.appendChild(x)}setTimeout(()=>c.innerHTML='',6500)}celebrate()</script>`);
 function respond(body,status=200,extra={}) {return {statusCode:status,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, private','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",...extra},body}}
 exports.handler=async event=>{
-  if(!secret||!password||secret.length<32) return respond('<h1>Configuración pendiente</h1><p>Define FAMILY_PASSWORD y SESSION_SECRET en Netlify.</p>',503);
+  if(!secret||!password||secret.length<32) return respond('<h1>Configuración pendiente</h1><p>Define ALBUM_PASSWORD y SESSION_SECRET en Netlify.</p>',503);
   const path = event.path || '/';
   if(event.httpMethod==='POST' && path==='/entrar') {
     const data = new URLSearchParams(event.isBase64Encoded?Buffer.from(event.body||'','base64').toString():event.body||'');
