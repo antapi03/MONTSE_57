@@ -28,7 +28,18 @@ function ipKey(event){const ip=event.headers?.['x-nf-client-connection-ip']||eve
 async function rateCheck(limits,key){const v=await limits.get(key,{type:'json'});return v&&v.until>now()&&v.count>=5?Math.max(1,v.until-now()):0;}
 async function rateFail(limits,key){const old=await limits.get(key,{type:'json'});const fresh=!old||old.until<=now();const next={count:fresh?1:old.count+1,until:fresh?now()+900:old.until};await limits.setJSON(key,next);}
 async function rateClear(limits,key){await limits.delete(key);}
-function sameOrigin(event){const origin=event.headers?.origin||event.headers?.Origin;const host=event.headers?.host||event.headers?.Host;return !!origin&&!!host&&origin===`https://${host}`;}
+function sameOrigin(event, requireOrigin=false){
+  const headers=event.headers||{};
+  const origin=headers.origin||headers.Origin;
+  const host=headers.host||headers.Host;
+  const fetchSite=headers['sec-fetch-site']||headers['Sec-Fetch-Site'];
+  if(fetchSite && !['same-origin','none'].includes(fetchSite))return false;
+  if(!host)return false;
+  if(origin)return origin===`https://${host}`;
+  // Firefox puede omitir Origin en formularios HTML normales.
+  // Solo se admite esa ausencia para entrar/salir; nunca para subir fotos.
+  return !requireOrigin;
+}
 function parseForm(event){const body=event.isBase64Encoded?Buffer.from(event.body||'','base64').toString('utf8'):event.body||'';if(Buffer.byteLength(body)>1024)return null;return new URLSearchParams(body);}
 function magic(buf,type){if(type==='image/jpeg')return buf.length>=4&&buf[0]===0xff&&buf[1]===0xd8&&buf[2]===0xff;if(type==='image/png')return buf.subarray(0,8).equals(Buffer.from('89504e470d0a1a0a','hex'));if(type==='image/webp')return buf.length>=12&&buf.toString('ascii',0,4)==='RIFF'&&buf.toString('ascii',8,12)==='WEBP';return false;}
 const types={'jpg':'image/jpeg','png':'image/png','webp':'image/webp'};
@@ -39,7 +50,7 @@ exports.handler=async event=>{
   if(!['GET','POST'].includes(method))return response('Método no permitido',405);
   const {sessions,limits,photos}=stores(event);
   if(method==='POST'){
-    if(!sameOrigin(event))return response('Origen no autorizado',403);
+    if(!sameOrigin(event,path==='/subir'))return response('Origen no autorizado',403);
     if(path==='/entrar'){
       const key='login/'+ipKey(event);const wait=await rateCheck(limits,key);
       if(wait)return response(login('Demasiados intentos. Espera 15 minutos.'),429,'text/html; charset=utf-8',{'Retry-After':String(wait)});
