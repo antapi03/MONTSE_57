@@ -31,13 +31,18 @@ async function rateClear(limits,key){await limits.delete(key);}
 function sameOrigin(event, requireOrigin=false){
   const headers=event.headers||{};
   const origin=headers.origin||headers.Origin;
-  const host=headers.host||headers.Host;
   const fetchSite=headers['sec-fetch-site']||headers['Sec-Fetch-Site'];
   if(fetchSite && !['same-origin','none'].includes(fetchSite))return false;
-  if(!host)return false;
-  if(origin)return origin===`https://${host}`;
-  // Firefox puede omitir Origin en formularios HTML normales.
-  // Solo se admite esa ausencia para entrar/salir; nunca para subir fotos.
+  // The public Netlify URL is authoritative; the function Host header can be internal.
+  const allowed = new Set();
+  for(const value of [process.env.URL, process.env.DEPLOY_PRIME_URL, 'https://symphonious-youtiao-743102.netlify.app']){
+    if(!value)continue;
+    try {const u=new URL(value);if(u.protocol==='https:')allowed.add(u.origin);}catch{}
+  }
+  if(origin){
+    try{return allowed.has(new URL(origin).origin) && new URL(origin).origin===origin;}catch{return false;}
+  }
+  // A standard HTML form may omit Origin; only login/logout allow that.
   return !requireOrigin;
 }
 function parseForm(event){const body=event.isBase64Encoded?Buffer.from(event.body||'','base64').toString('utf8'):event.body||'';if(Buffer.byteLength(body)>1024)return null;return new URLSearchParams(body);}
