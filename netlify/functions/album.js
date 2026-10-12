@@ -75,11 +75,11 @@ function adminAuthenticated(event){
 }
 function adminCookie(expiry){const stamp=String(expiry);return `${adminCookieName}=${stamp}.${adminSignature(stamp)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${adminLifetime}`}
 function adminResponse(data,status=200,extra={}){
- return {statusCode:status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',...extra},body:JSON.stringify(data)};
+ return {statusCode:status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store, no-cache, must-revalidate, private','Pragma':'no-cache','Expires':'0','X-Content-Type-Options':'nosniff',...extra},body:JSON.stringify(data)};
 }
 async function loadChapters(event){
  connectLambda(event);
- const saved=await getStore(chapterStoreName).get('chapters',{type:'json'});
+ const saved=await getStore({name:chapterStoreName,consistency:'strong'}).get('chapters',{type:'json'});
  if(!saved)return {revision:0,chapters:defaultChapters};
  if(!Number.isSafeInteger(saved.revision)||!Array.isArray(saved.chapters))throw new Error('Configuracion de capitulos no valida');
  return saved;
@@ -104,9 +104,9 @@ function draw(){el('items').innerHTML=chapters.map((c,i)=>'<section class="item"
 el('items').addEventListener('input',e=>{const field=e.target.dataset.field;if(!field)return;const section=e.target.closest('[data-id]');const c=chapters.find(x=>x.id===section.dataset.id);if(c){c[field]=e.target.value;mark()}});
 el('items').addEventListener('click',e=>{const action=e.target.dataset.action;if(!action)return;const section=e.target.closest('[data-id]');const i=chapters.findIndex(x=>x.id===section.dataset.id);if(i<0)return;if(action==='delete'){if(!confirm('¿Eliminar el capítulo «'+chapters[i].title+'»? Esta fase aún no contiene fotografías.'))return;chapters.splice(i,1)}else{const j=i+(action==='up'?-1:1);if(j<0||j>=chapters.length)return;[chapters[i],chapters[j]]=[chapters[j],chapters[i]]}mark();draw()});
 el('add').onclick=()=>{if(chapters.length>=100)return status('Máximo técnico de 100 capítulos.','error');chapters.push({id:'cap-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10),title:'Nuevo capítulo',intro:''});mark();draw()};
-async function load(){if(dirty&&!confirm('Hay cambios sin guardar. ¿Descartarlos?'))return;try{const r=await fetch('/api/capitulos',{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw new Error('No se pueden leer los capítulos ('+r.status+').');const data=await r.json();chapters=data.chapters;revision=data.revision;dirty=false;draw();status('Capítulos cargados correctamente.','success')}catch(e){status(e.message,'error')}}
+async function load(){if(dirty&&!confirm('Hay cambios sin guardar. ¿Descartarlos?'))return;try{const r=await fetch('/api/capitulos?actualizar='+Date.now(),{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw new Error('No se pueden leer los capítulos ('+r.status+').');const data=await r.json();chapters=data.chapters;revision=data.revision;dirty=false;draw();status('Capítulos cargados correctamente.','success')}catch(e){status(e.message,'error')}}
 el('reload').onclick=load;
-el('save').onclick=async()=>{if(!chapters.every(c=>c.title.trim()))return status('Todos los capítulos deben tener nombre.','error');el('save').disabled=true;try{const r=await fetch('/api/capitulos',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({revision,chapters})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Error al guardar ('+r.status+').');revision=data.revision;dirty=false;status('Guardado correctamente. Revisión '+revision+'.','success')}catch(e){status(e.message,'error')}finally{el('save').disabled=false}};
+el('save').onclick=async()=>{if(!chapters.every(c=>c.title.trim()))return status('Todos los capítulos deben tener nombre.','error');el('save').disabled=true;try{const r=await fetch('/api/capitulos',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({revision,chapters})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Error al guardar ('+r.status+').');revision=data.revision;dirty=false;await load();status('Guardado y comprobado. Revisión '+revision+'.','success')}catch(e){status(e.message,'error')}finally{el('save').disabled=false}};
 el('exit').onclick=async()=>{if(dirty&&!confirm('¿Salir sin guardar los cambios?'))return;await fetch('/admin/salir',{method:'POST',credentials:'same-origin'});location.href='/'};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});load();
 </script></body></html>`;
@@ -152,7 +152,7 @@ exports.handler=async event=>{
       const current=await loadChapters(event);
       if(current.revision!==payload.revision)return adminResponse({error:'Otra persona ha guardado cambios. Recarga los capítulos antes de guardar para no sobrescribirlos.'},409);
       const updated={revision:current.revision+1,chapters:payload.chapters.map(c=>({id:c.id,title:c.title.trim(),intro:c.intro.trim()}))};
-      connectLambda(event);await getStore(chapterStoreName).setJSON('chapters',updated);
+      connectLambda(event);await getStore({name:chapterStoreName,consistency:'strong'}).setJSON('chapters',updated);
       return adminResponse({revision:updated.revision,ok:true});
     }
     return respond('Método no permitido',405);
@@ -163,7 +163,7 @@ exports.handler=async event=>{
     const key=path.slice('/media/'.length);
     if(key==='prueba.svg') {
       const svg='<svg xmlns="http://www.w3.org/2000/svg" width="800" height="350" viewBox="0 0 800 350"><rect width="800" height="350" fill="#ffe49e"/><text x="400" y="125" text-anchor="middle" font-family="sans-serif" font-size="48" fill="#a32d77">🌸 MONTSE 57 🌸</text><text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="30" fill="#5d376b">Imagen protegida de prueba</text></svg>';
-      return {statusCode:200,headers:{'Content-Type':'image/svg+xml','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY'},body:svg};
+      return {statusCode:200,headers:{'Content-Type':'image/svg+xml','Cache-Control':'no-store, no-cache, must-revalidate, private','Pragma':'no-cache','Expires':'0','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY'},body:svg};
     }
     if(!/^[a-zA-Z0-9_\/-]+\.(jpg|jpeg|png|webp|gif|mp4)$/.test(key) || key.includes('..')) return respond('No encontrado',404);
     try {
@@ -173,7 +173,7 @@ exports.handler=async event=>{
       if(data===null) return respond('No encontrado',404);
       const ext=key.split('.').pop().toLowerCase();
       const types={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif',mp4:'video/mp4'};
-      return {statusCode:200,isBase64Encoded:true,headers:{'Content-Type':types[ext],'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'},body:Buffer.from(data).toString('base64')};
+      return {statusCode:200,isBase64Encoded:true,headers:{'Content-Type':types[ext],'Cache-Control':'no-store, no-cache, must-revalidate, private','Pragma':'no-cache','Expires':'0','X-Content-Type-Options':'nosniff'},body:Buffer.from(data).toString('base64')};
     } catch(e) {console.error('Error de almacenamiento privado:',e.message);return respond('Almacenamiento no disponible',503);}
   }
   if(event.httpMethod==='POST' && path==='/entrar') {
