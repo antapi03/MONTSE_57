@@ -79,7 +79,7 @@ function adminResponse(data,status=200,extra={}){
 }
 async function loadChapters(event){
  connectLambda(event);
- const saved=await getStore({name:chapterStoreName,consistency:'strong'}).get('chapters',{type:'json'});
+ const saved=await getStore(chapterStoreName).get('chapters',{type:'json'});
  if(!saved)return {revision:0,chapters:defaultChapters};
  if(!Number.isSafeInteger(saved.revision)||!Array.isArray(saved.chapters))throw new Error('Configuracion de capitulos no valida');
  return saved;
@@ -152,7 +152,7 @@ exports.handler=async event=>{
       const current=await loadChapters(event);
       if(current.revision!==payload.revision)return adminResponse({error:'Otra persona ha guardado cambios. Recarga los capítulos antes de guardar para no sobrescribirlos.'},409);
       const updated={revision:current.revision+1,chapters:payload.chapters.map(c=>({id:c.id,title:c.title.trim(),intro:c.intro.trim()}))};
-      connectLambda(event);await getStore({name:chapterStoreName,consistency:'strong'}).setJSON('chapters',updated);
+      connectLambda(event);await getStore(chapterStoreName).setJSON('chapters',updated);
       return adminResponse({revision:updated.revision,ok:true});
     }
     return respond('Método no permitido',405);
