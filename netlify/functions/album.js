@@ -135,7 +135,9 @@ exports.handler=async event=>{
     if(path==='/admin'||path==='/admin/'){
       if(event.httpMethod!=='GET')return respond('Método no permitido',405);
       if(!adminPassword)return respond('<h1>Falta configurar ALBUM_ADMIN_PASSWORD en Netlify</h1>',503);
-      return respond(adminAuthenticated(event)?adminHtml:adminLogin());
+      return adminAuthenticated(event)
+        ? respond(adminHtml,200,{'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"})
+        : respond(adminLogin());
     }
     if(path==='/api/capitulos'){
       if(!adminAuthenticated(event))return adminResponse({error:'Acceso de administración no autorizado.'},401);
