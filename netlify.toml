@@ -6,6 +6,17 @@
   node_bundler = "esbuild"
 
 [[redirects]]
+  from = "/entrar"
+  to = "/.netlify/functions/album"
+  status = 200
+  force = true
+
+  [redirects.rate_limit]
+    window_limit = 5
+    window_size = 60
+    aggregate_by = ["ip", "domain"]
+
+[[redirects]]
   from = "/*"
   to = "/.netlify/functions/album"
   status = 200
