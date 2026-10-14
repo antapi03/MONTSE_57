@@ -325,12 +325,41 @@ body[data-admin-theme="artdeco"] .admin-tile small,body[data-admin-theme="enchan
 .mock[data-theme="enchanted"] .ornament{color:#ffdd9b!important}
 .mock[data-theme="enchanted"] .mockphoto{border:8px solid #c7a9e1;transform:rotate(3deg);box-shadow:0 5px 17px #12122caa}
 .general-panel{max-width:760px;margin:15px auto;padding:clamp(14px,3vw,26px);border:2px solid var(--edge,#e2d3d7);border-radius:18px;background:var(--panel,#fffaf5);color:var(--ink,#493949);display:flex;flex-direction:column;gap:10px}.general-panel h3{margin:14px 0 3px;color:var(--accent,#854c68)}.general-panel label{font-weight:650}.general-panel input:not([type="checkbox"]):not([type="range"]):not([type="file"]),.general-panel select{width:100%;padding:11px;border-radius:9px;border:1px solid var(--edge,#bda7ac);background:var(--field-bg,#fff);color:var(--field-ink,#322)}.general-panel input[type="range"]{width:100%}.general-check{display:flex;align-items:center;gap:10px}.general-preview{margin:10px 0 16px;padding:23px 12px;text-align:center;background:#203253;color:#f6e6bd;border-radius:12px}.general-preview small{display:block;letter-spacing:.17em;text-transform:uppercase;font:10px system-ui;color:#f3d7a1}.general-preview h2{font-family:Georgia,serif!important;font-size:clamp(22px,4vw,33px)!important;color:#ffedc9!important;margin:8px 0!important}.general-preview p{font-style:italic;margin:0}.general-upload{border:1px dashed var(--edge,#bda7ac);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}.general-tracks{display:flex;flex-direction:column;gap:7px}.general-track{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px;border:1px solid var(--edge,#ddd);border-radius:9px}.general-track span{overflow-wrap:anywhere}.general-track button{white-space:nowrap}.general-panel button{cursor:pointer}#gen-status{min-height:1.4em}
+
+/* V5.1: tarjetas legibles en todos los temas, sin depender de contrastes de la paleta. */
+body[data-admin-theme] .admin-grid .admin-tile{
+ background:#f9f6ee!important;
+ color:#293347!important;
+ border-color:#9da5b3!important;
+ opacity:1;
+}
+body[data-admin-theme] .admin-grid .admin-tile strong{
+ color:#26384e!important;
+ text-shadow:none!important;
+}
+body[data-admin-theme] .admin-grid .admin-tile small,
+body[data-admin-theme] .admin-grid .admin-tile .soon{
+ color:#4a5768!important;
+ text-shadow:none!important;
+}
+body[data-admin-theme] .admin-grid .admin-tile:disabled{
+ background:#e7e8e9!important;
+ color:#344155!important;
+ opacity:.88;
+}
+body[data-admin-theme] .admin-grid .admin-tile:not(:disabled):hover,
+body[data-admin-theme] .admin-grid .admin-tile:not(:disabled):focus-visible{
+ background:#fffdf8!important;
+ border-color:#526b8a!important;
+}
+body[data-admin-theme] .admin-grid .admin-tile .tile-icon{filter:none!important}
 </style></head><body data-admin-theme="classic"><main>
 <section id="screen-home" class="admin-screen">
- <header><div><div class="small">Álbum de Montse · Administración privada</div><h1>Panel de administración</h1></div><a href="/album.html">← Volver al libro</a></header>
- <p class="dashboard-intro">Elige qué quieres gestionar. Cada herramienta tiene su propio espacio.</p>
+ <header><div><div class="small"><span id="admin-album-title">Montse · 57 años</span></div><h1>Panel de administración</h1></div><a href="/album.html">← Volver al libro</a></header>
+ 
  <div class="admin-grid">
-  <button type="button" class="admin-tile" data-open-screen="general"><span class="tile-icon">⚙️</span><strong>Configuración general</strong><small>Cabecera y música de fondo del álbum.</small></button>\n  <button type="button" class="admin-tile" data-open-screen="chapters"><span class="tile-icon">📖</span><strong>Capítulos</strong><small>Crear, editar, ordenar y eliminar capítulos.</small></button>
+  <button type="button" class="admin-tile" data-open-screen="general"><span class="tile-icon">⚙️</span><strong>Configuración general</strong><small>Cabecera y música de fondo del álbum.</small></button>
+  <button type="button" class="admin-tile" data-open-screen="chapters"><span class="tile-icon">📖</span><strong>Capítulos</strong><small>Crear, editar, ordenar y eliminar capítulos.</small></button>
   <button type="button" class="admin-tile" data-open-screen="appearance"><span class="tile-icon">🎨</span><strong>Apariencia</strong><small>Comparar los doce diseños del álbum.</small></button>
   <button type="button" class="admin-tile" disabled><span class="tile-icon">🖼️</span><strong>Fotografías</strong><small>Subir, organizar y eliminar imágenes.</small><span class="soon">Próximamente</span></button>
   <button type="button" class="admin-tile" disabled><span class="tile-icon">💌</span><strong>Portada y textos</strong><small>Dedicatorias, portada y mensajes.</small><span class="soon">Próximamente</span></button>
@@ -341,10 +370,10 @@ body[data-admin-theme="artdeco"] .admin-tile small,body[data-admin-theme="enchan
 </section>
 <section id="screen-general" class="admin-screen" hidden>
  <div class="screen-head"><h2>⚙️ Configuración general</h2><button type="button" class="back-button" data-back-home>← Volver al panel</button></div>
- <p class="small">Personaliza este álbum sin modificar el código. Los cambios se guardan de forma privada.</p>
+ 
  <div class="general-panel">
  <h3>Cabecera del álbum</h3>
- <label for="gen-kicker">Línea superior</label><input id="gen-kicker" maxlength="100">
+ <label for="gen-kicker">Sobretítulo</label><input id="gen-kicker" maxlength="100">
  <label for="gen-title">Título principal</label><input id="gen-title" maxlength="130">
  <label for="gen-subtitle">Subtítulo</label><input id="gen-subtitle" maxlength="220">
  <div class="general-preview"><small id="gen-preview-kicker"></small><h2 id="gen-preview-title"></h2><p id="gen-preview-subtitle"></p></div>
@@ -597,7 +626,7 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
   try{
    const r=await fetch('/api/configuracion-admin?x='+Date.now(),{credentials:'same-origin',cache:'no-store'});
    const d=await r.json();if(!r.ok)throw Error(d.error);
-   revision=d.revision;tracks=d.tracks||[];drawTracks();
+   revision=d.revision;tracks=d.tracks||[];drawTracks();const dashboardTitle=g('admin-album-title');if(dashboardTitle)dashboardTitle.textContent=d.config.title||'Montse · 57 años';
    for(const k of keys)g('gen-'+k).value=d.config[k]||'';
    g('gen-music-enabled').checked=!!d.config.musicEnabled;
    g('gen-volume').value=d.config.volume;
@@ -613,7 +642,7 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
   try{
    const r=await fetch('/api/configuracion-admin',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({revision,config})});
    const d=await r.json();if(!r.ok)throw Error(d.error||'No se pudo guardar');
-   revision=d.revision;message('Configuración guardada. La cabecera se actualizará al abrir o recargar el libro.');
+   revision=d.revision;g('admin-album-title').textContent=config.title;message('Configuración guardada. La cabecera se actualizará al abrir o recargar el libro.');
   }catch(e){message(e.message,true)}
  };
  g('gen-reload').onclick=load;
