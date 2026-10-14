@@ -139,6 +139,35 @@ body[data-admin-theme="burgundy"] .appearance .theme{background:#fff8eb;color:#5
 body[data-admin-theme="burgundy"] .appearance .mock{color:#503342}
 body[data-admin-theme="burgundy"] input,body[data-admin-theme="burgundy"] textarea{background:#fff8ed;color:#432e38}
 body[data-admin-theme="burgundy"] .admin-tile:disabled{opacity:.65}
+
+/* V3.1: cabeceras coherentes y contraste accesible en los cuatro temas. */
+.screen-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:22px 0 18px}
+.screen-head h2{flex:1 1 260px;font-family:Georgia,serif;font-size:clamp(27px,3.8vw,39px);font-weight:700;line-height:1.15;letter-spacing:-.025em;color:var(--accent,#854c68)}
+.screen-head .back-button{margin-left:auto;flex:0 0 auto;white-space:nowrap;font-weight:700}
+body[data-admin-theme]{--control-bg:#fffdf9;--control-ink:#442c3b;--control-border:#916b80;--primary-bg:#713454;--primary-ink:#fff;--primary-border:#713454;--field-bg:#fffdf9;--field-ink:#32252c;--field-border:#997a8a;--card-bg:#fffdf9;--card-ink:#44323c;--card-muted:#69515e}
+body[data-admin-theme="romantic"]{--control-bg:#fffaf4;--control-ink:#66314c;--control-border:#a76b85;--primary-bg:#873e64;--primary-ink:#fff;--primary-border:#873e64;--card-bg:#fff9f4;--card-ink:#63364d;--card-muted:#755366}
+body[data-admin-theme="classic"]{--control-bg:#fffefa;--control-ink:#51452f;--control-border:#877552;--primary-bg:#645233;--primary-ink:#fff;--primary-border:#645233;--card-bg:#fffefa;--card-ink:#484032;--card-muted:#625a4b}
+body[data-admin-theme="floral"]{--control-bg:#fffef6;--control-ink:#65354a;--control-border:#9b5874;--primary-bg:#973c61;--primary-ink:#fff;--primary-border:#973c61;--card-bg:#fffdf3;--card-ink:#55394a;--card-muted:#6c5260}
+body[data-admin-theme="burgundy"]{--control-bg:#fff8e9;--control-ink:#482a38;--control-border:#c29c64;--primary-bg:#f0ce8d;--primary-ink:#37202b;--primary-border:#f0ce8d;--field-bg:#fff9ee;--field-ink:#382331;--field-border:#bc995e;--card-bg:#fff9ee;--card-ink:#3d2934;--card-muted:#68505b}
+body[data-admin-theme] button:not(:disabled){background:var(--control-bg);color:var(--control-ink);border-color:var(--control-border)}
+body[data-admin-theme] button.primary:not(:disabled){background:var(--primary-bg);color:var(--primary-ink);border-color:var(--primary-border)}
+body[data-admin-theme] button:focus-visible,body[data-admin-theme] a:focus-visible,body[data-admin-theme] input:focus-visible,body[data-admin-theme] textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+body[data-admin-theme] button:disabled{opacity:.65;color:var(--control-ink);background:var(--control-bg);border-color:var(--control-border)}
+body[data-admin-theme] input,body[data-admin-theme] textarea{background:var(--field-bg);color:var(--field-ink);border-color:var(--field-border)}
+body[data-admin-theme] .item{background:var(--card-bg);color:var(--card-ink);border-color:var(--edge)}
+body[data-admin-theme] .item :is(label,.small){color:var(--card-muted)}
+body[data-admin-theme] .appearance .theme{background:var(--control-bg);color:var(--control-ink);border-color:var(--control-border)}
+body[data-admin-theme] .appearance .theme[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+body[data-admin-theme] .admin-tile{background:var(--panel);color:var(--ink);border-color:var(--edge)}
+body[data-admin-theme] .admin-tile strong{color:var(--accent)}
+body[data-admin-theme] .admin-tile small,body[data-admin-theme] .admin-tile .soon{color:var(--muted)}
+body[data-admin-theme="burgundy"] .admin-tile:disabled{opacity:.8}
+body[data-admin-theme="burgundy"] .admin-tile strong{color:#f0cf8d}
+body[data-admin-theme="burgundy"] .appearance .disclaimer{color:#f3ddc9}
+body[data-admin-theme="burgundy"] .appearance .theme,body[data-admin-theme="burgundy"] .appearance .theme *{color:#482a38}
+body[data-admin-theme="burgundy"] .notice.success{background:#d9f2df;color:#22452d}
+body[data-admin-theme="burgundy"] .notice.error{background:#ffe4e4;color:#6a2430}
+@media(max-width:540px){.screen-head{align-items:flex-start}.screen-head h2{flex-basis:100%}.screen-head .back-button{margin-left:auto}}
 </style></head><body data-admin-theme="classic"><main>
 <section id="screen-home" class="admin-screen">
  <header><div><div class="small">Álbum de Montse · Administración privada</div><h1>Panel de administración</h1></div><a href="/album.html">← Volver al libro</a></header>
@@ -154,14 +183,14 @@ body[data-admin-theme="burgundy"] .admin-tile:disabled{opacity:.65}
  <div class="dashboard-actions"><button type="button" id="exit">Salir de administración</button></div>
 </section>
 <section id="screen-chapters" class="admin-screen" hidden>
- <div class="screen-head"><button type="button" class="back-button" data-back-home>← Volver al panel</button><h2>Gestionar capítulos</h2></div>
+ <div class="screen-head"><h2>Gestionar capítulos</h2><button type="button" class="back-button" data-back-home>← Volver al panel</button></div>
  <p>Organiza los capítulos. Los cambios se guardan en Netlify, pero <strong>todavía no modifican el libro V4</strong>; conectaremos ambos en una etapa posterior.</p>
  <div class="notice">La gestión de capítulos está operativa. Las fotografías se incorporarán después.</div>
  <div class="toolbar"><button type="button" id="add">＋ Añadir capítulo</button><button type="button" class="primary" id="save">Guardar cambios</button><button type="button" id="reload">Recargar</button></div>
  <div id="status" role="status" aria-live="polite"></div><div id="items"></div>
 </section>
 <section id="screen-appearance" class="admin-screen" hidden>
- <div class="screen-head"><button type="button" class="back-button" data-back-home>← Volver al panel</button><h2>Apariencia del álbum</h2></div>
+ <div class="screen-head"><h2>Apariencia del álbum</h2><button type="button" class="back-button" data-back-home>← Volver al panel</button></div>
  <section class="appearance" aria-labelledby="appearance-title"><h2 id="appearance-title">🎨 Prueba de diseños</h2><p class="small">Prueba los cuatro diseños. Elige un diseño, compruébalo en el libro y aplícalo cuando te guste. La vista previa no cambia el álbum familiar.</p><div class="themes" id="theme-options"><button type="button" class="theme" data-theme="romantic" aria-pressed="true" style="--outer:#e6cdbb;--paper:#fff5e9"><span class="swatch"></span><span class="theme-name">🌸 Romántico scrapbook</span></button><button type="button" class="theme" data-theme="classic" aria-pressed="false" style="--outer:#eee3d9;--paper:#fffaf4"><span class="swatch"></span><span class="theme-name">📖 Clásico elegante</span></button><button type="button" class="theme" data-theme="floral" aria-pressed="false" style="--outer:#e4eacb;--paper:#fff7e9"><span class="swatch"></span><span class="theme-name">🌼 Floral y alegre</span></button><button type="button" class="theme" data-theme="burgundy" aria-pressed="false" style="--outer:#56343c;--paper:#f5e9d7"><span class="swatch"></span><span class="theme-name">✨ Burdeos y dorado</span></button></div><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div><p class="disclaimer" id="theme-caption">Selecciona un diseño para verlo en el libro.</p><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section>
 </section>
 </main><script>
