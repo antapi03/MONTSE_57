@@ -206,6 +206,16 @@ body[data-admin-theme="burgundy"] .notice.error{background:#ffe4e4;color:#6a2430
 .appearance .selected-label{background:#e6edf7;color:#273f67;border-color:#718bad}
 .appearance .theme-label[hidden]{display:none!important}
 @media(max-width:540px){.appearance-zone{padding:11px}.appearance .theme-label{font-size:10px;padding:4px 5px}.appearance .theme-labels{min-height:24px}}
+
+/* V3.6: zona de cambio visible únicamente al seleccionar otro diseño. */
+.appearance-workspace[hidden]{display:none!important}
+/* Contraste en la miniatura oscura, independientemente del tema del administrador. */
+body[data-admin-theme] .appearance .theme-mini.mock[data-theme="burgundy"] .mockpage,
+body[data-admin-theme] .appearance .theme-mini.mock[data-theme="burgundy"] .mockpage *,
+.appearance .theme-mini.mock[data-theme="burgundy"] .mockpage,
+.appearance .theme-mini.mock[data-theme="burgundy"] .mockpage *{color:#fff1d5!important;text-shadow:0 1px 2px #231018}
+.appearance .theme-mini.mock[data-theme="burgundy"] .mockpage .ornament{color:#f6d18a!important}
+.appearance .theme-mini.mock[data-theme="burgundy"] .mockpage{background:linear-gradient(135deg,#452635,#693d4b)!important}
 </style></head><body data-admin-theme="classic"><main>
 <section id="screen-home" class="admin-screen">
  <header><div><div class="small">Álbum de Montse · Administración privada</div><h1>Panel de administración</h1></div><a href="/album.html">← Volver al libro</a></header>
@@ -241,7 +251,7 @@ body[data-admin-theme="burgundy"] .notice.error{background:#ffe4e4;color:#6a2430
  </button><button type="button" class="theme" data-theme="burgundy" aria-pressed="false">
  <span class="theme-mini mock" data-theme="burgundy" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">❀ ♡ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">❦</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
  <span class="theme-name">✨ Burdeos y dorado</span><span class="theme-desc">Burdeos profundo y detalles dorados</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span><span class="theme-label selected-label" hidden>◉ SELECCIONADO PARA PROBAR</span></span>
- </button></div></section><section class="appearance-zone appearance-workspace" aria-labelledby="workspace-title"><h2 id="workspace-title">👁 Vista previa y cambio de estilo</h2><p class="small">Aquí puedes examinar el diseño seleccionado antes de aplicarlo al libro y a la administración.</p><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div><p class="disclaimer" id="theme-caption">Selecciona un diseño para verlo en el libro.</p><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section></section>
+ </button></div></section><section class="appearance-zone appearance-workspace" id="appearance-workspace" aria-labelledby="workspace-title" hidden><h2 id="workspace-title">👁 Vista previa y cambio de estilo</h2><p class="small">Aquí puedes examinar el diseño seleccionado antes de aplicarlo al libro y a la administración.</p><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div><p class="disclaimer" id="theme-caption">Selecciona un diseño para verlo en el libro.</p><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section></section>
 </section>
 </main><script>
 let chapters=[],revision=0,dirty=false;const el=id=>document.getElementById(id);
@@ -267,6 +277,10 @@ document.getElementById('theme-options').addEventListener('click',event=>{
 
 // La selección de un diseño no guarda nada hasta pulsar Aplicar.
 let selectedTheme='romantic',activeTheme=null;
+function updateAppearanceWorkspace(){
+ const workspace=document.getElementById('appearance-workspace');
+ if(workspace)workspace.hidden=!(activeTheme&&selectedTheme!==activeTheme);
+}
 function updateThemeLabels(){
  document.querySelectorAll('#theme-options button[data-theme]').forEach(button=>{
   const current=button.dataset.theme===activeTheme;
@@ -284,6 +298,7 @@ function chooseTheme(theme){
  document.querySelectorAll('#theme-options button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===theme)));
  document.getElementById('theme-caption').textContent='Diseño seleccionado para la vista previa: '+themeNames[theme]+(activeTheme===theme?' (ESTILO ACTUAL).':'. El estilo actual sigue siendo '+(themeNames[activeTheme]||'desconocido')+'.');
  updateThemeLabels();
+ updateAppearanceWorkspace();
 }
 // La revisión más reciente evita que una lectura retrasada revierta un diseño aplicado.
 const appearanceRevisionKey='montse-apariencia-revision-v3';
