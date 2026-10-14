@@ -104,9 +104,31 @@ function draw(){el('items').innerHTML=chapters.map((c,i)=>'<section class="item"
 el('items').addEventListener('input',e=>{const field=e.target.dataset.field;if(!field)return;const section=e.target.closest('[data-id]');const c=chapters.find(x=>x.id===section.dataset.id);if(c){c[field]=e.target.value;mark()}});
 el('items').addEventListener('click',e=>{const action=e.target.dataset.action;if(!action)return;const section=e.target.closest('[data-id]');const i=chapters.findIndex(x=>x.id===section.dataset.id);if(i<0)return;if(action==='delete'){if(!confirm('¿Eliminar el capítulo «'+chapters[i].title+'»? Esta fase aún no contiene fotografías.'))return;chapters.splice(i,1)}else{const j=i+(action==='up'?-1:1);if(j<0||j>=chapters.length)return;[chapters[i],chapters[j]]=[chapters[j],chapters[i]]}mark();draw()});
 el('add').onclick=()=>{if(chapters.length>=100)return status('Máximo técnico de 100 capítulos.','error');chapters.push({id:'cap-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10),title:'Nuevo capítulo',intro:''});mark();draw()};
-async function load(){if(dirty&&!confirm('Hay cambios sin guardar. ¿Descartarlos?'))return;try{const r=await fetch('/api/capitulos?actualizar='+Date.now(),{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw new Error('No se pueden leer los capítulos ('+r.status+').');const data=await r.json();chapters=data.chapters;revision=data.revision;dirty=false;draw();status('Capítulos cargados correctamente.','success')}catch(e){status(e.message,'error')}}
+// Mantiene la revision mas reciente vista por esta pestaña, incluso tras Ctrl+R.
+const revisionKey='montse-capitulos-revision-v3';
+function knownRevision(){try{return Number(sessionStorage.getItem(revisionKey))||0}catch{return 0}}
+function rememberRevision(n){try{sessionStorage.setItem(revisionKey,String(Math.max(knownRevision(),n)))}catch{}}
+async function load(){
+ if(dirty&&!confirm('Hay cambios sin guardar. ¿Descartarlos?'))return;
+ const minimum=Math.max(revision,knownRevision());
+ try{
+  for(let attempt=0;attempt<6;attempt++){
+   const r=await fetch('/api/capitulos?actualizar='+Date.now()+'-'+attempt,{credentials:'same-origin',cache:'no-store'});
+   if(!r.ok)throw new Error('No se pueden leer los capítulos ('+r.status+').');
+   const data=await r.json();
+   if(!Number.isSafeInteger(data.revision)||!Array.isArray(data.chapters))throw new Error('Respuesta de capítulos incorrecta.');
+   if(data.revision<minimum){
+    if(attempt===5)throw new Error('El servidor ha enviado una revisión anterior ('+data.revision+') a la ya guardada ('+minimum+'). No se muestran datos antiguos. Pulsa Recargar para reintentar.');
+    await new Promise(resolve=>setTimeout(resolve,400));
+    continue;
+   }
+   chapters=data.chapters;revision=data.revision;rememberRevision(revision);dirty=false;draw();
+   status('Capítulos cargados correctamente. Revisión '+revision+'.','success');return;
+  }
+ }catch(e){status(e.message,'error')}
+}
 el('reload').onclick=load;
-el('save').onclick=async()=>{if(!chapters.every(c=>c.title.trim()))return status('Todos los capítulos deben tener nombre.','error');el('save').disabled=true;try{const r=await fetch('/api/capitulos',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({revision,chapters})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Error al guardar ('+r.status+').');revision=data.revision;dirty=false;status('Cambios guardados correctamente. Revisión '+revision+'.','success')}catch(e){status(e.message,'error')}finally{el('save').disabled=false}};
+el('save').onclick=async()=>{if(!chapters.every(c=>c.title.trim()))return status('Todos los capítulos deben tener nombre.','error');el('save').disabled=true;try{const r=await fetch('/api/capitulos',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({revision,chapters})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Error al guardar ('+r.status+').');revision=data.revision;rememberRevision(revision);dirty=false;status('Cambios guardados correctamente. Revisión '+revision+'.','success')}catch(e){status(e.message,'error')}finally{el('save').disabled=false}};
 el('exit').onclick=async()=>{if(dirty&&!confirm('¿Salir sin guardar los cambios?'))return;await fetch('/admin/salir',{method:'POST',credentials:'same-origin'});location.href='/'};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});load();
 </script></body></html>`;
