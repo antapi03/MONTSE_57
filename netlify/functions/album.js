@@ -364,7 +364,7 @@ body[data-admin-theme="artdeco"] .admin-tile small,body[data-admin-theme="enchan
  </button><button type="button" class="theme" data-theme="enchanted" aria-pressed="false">
  <span class="theme-mini mock" data-theme="enchanted" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">🦋 ✨ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">🦋 ✨ ❀</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
  <span class="theme-name">🦋 Jardín encantado</span><span class="theme-desc">Mariposas, luciérnagas y fantasía</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span></span>
- </button></div><button type="button" class="carousel-arrow" id="theme-next" aria-label="Estilo siguiente">❯</button></div><div class="carousel-position" id="theme-position" aria-live="polite"></div><div class="carousel-actions"><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section><section class="appearance-zone appearance-workspace" id="appearance-workspace" aria-labelledby="workspace-title" hidden><h2 id="workspace-title">👁 Vista previa y cambio de estilo</h2><p class="small">Aquí puedes examinar el diseño seleccionado antes de aplicarlo al libro y a la administración.</p><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div></section></section>
+ </button></div><button type="button" class="carousel-arrow" id="theme-next" aria-label="Estilo siguiente">❯</button></div><div class="carousel-position" id="theme-position" aria-live="polite"></div><div class="carousel-actions"><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section><section class="appearance-zone appearance-workspace" id="appearance-workspace" aria-labelledby="workspace-title" hidden><h2 id="workspace-title">👁 Vista previa y cambio de estilo</h2><p class="small">Diseño seleccionado: <strong id="workspace-selected-name">Romántico scrapbook</strong></p><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div></section></section>
 </section>
 </main><script>
 let chapters=[],revision=0,dirty=false;const el=id=>document.getElementById(id);
@@ -441,6 +441,12 @@ function chooseTheme(theme){
  if(!Object.prototype.hasOwnProperty.call(themeNames,theme))return;
  selectedTheme=theme;
  document.getElementById('theme-preview').dataset.theme=theme;
+ const workspaceName=document.getElementById('workspace-selected-name');
+ if(workspaceName)workspaceName.textContent=themeNames[theme];
+ const ornaments={romantic:'❀ ♡ ❀',classic:'✧ ◇ ✧',floral:'✿ ❁ ✿',burgundy:'❦ ✦ ❦',mediterranean:'⚓ ≋ ☼',retro:'✺ ◆ ✺',starlight:'☾ ✦ ✧',botanical:'❧ ❦ ❧',popart:'★ ⚡ ★',artdeco:'◆ ✧ ◆',travel:'✈ ◈ 🧭',enchanted:'🦋 ✧ ✿'};
+ const mock=document.getElementById('theme-preview');
+ const ornament=mock.querySelector('.mockpage .ornament');
+ if(ornament)ornament.textContent=ornaments[theme]||'✦';
  document.querySelectorAll('#theme-options button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===theme)));
 
  updateThemeLabels();
