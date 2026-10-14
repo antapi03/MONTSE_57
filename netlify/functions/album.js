@@ -189,6 +189,23 @@ body[data-admin-theme="burgundy"] .notice.error{background:#ffe4e4;color:#6a2430
 .appearance .theme-desc{font-size:12px;opacity:.85}
 .appearance .theme .active-theme-message{margin-top:4px}
 @media(max-width:520px){.appearance .themes{gap:10px}.appearance .theme{padding:7px;gap:5px}.appearance .theme-mini{padding:5px}.appearance .theme-mini .mockpage{padding:3px 2px;gap:2px}.appearance .theme-mini .mocknote{font-size:8px}.appearance .theme-desc{font-size:11px}}
+
+/* V3.5: catálogo separado de la zona de aplicación; etiquetas de estado independientes. */
+.appearance{padding:0;background:transparent!important;border:0!important;box-shadow:none!important}
+.appearance-zone{background:var(--panel,#fffaf5);color:var(--ink,#46344c);border:2px solid var(--edge,#e7d7df);border-radius:20px;padding:clamp(13px,2.4vw,23px);box-shadow:0 7px 22px #34232c16}
+.appearance-zone+.appearance-zone{margin-top:25px}
+.appearance-zone h2{font-size:clamp(21px,2.7vw,27px);margin:0 0 7px}
+.appearance-catalog{border-top:6px solid var(--accent,#884d72)}
+.appearance-workspace{border-top:6px solid var(--accent,#884d72);background:var(--panel,#fffaf5)}
+.appearance-workspace .mock#theme-preview{margin-top:15px}
+.appearance .theme{border-width:2px}
+.appearance .theme.is-active{outline:3px solid var(--accent,#884d72);outline-offset:2px}
+.appearance .theme.is-selected:not(.is-active){border-style:dashed;border-width:3px}
+.appearance .theme-labels{display:flex;flex-wrap:wrap;gap:6px;min-height:24px;align-items:center}
+.appearance .theme-label{font-weight:800;font-size:11px;letter-spacing:.02em;line-height:1.25;border-radius:7px;padding:5px 8px;background:#fff7dd;color:#603a30;border:1px solid #a77b48}
+.appearance .selected-label{background:#e6edf7;color:#273f67;border-color:#718bad}
+.appearance .theme-label[hidden]{display:none!important}
+@media(max-width:540px){.appearance-zone{padding:11px}.appearance .theme-label{font-size:10px;padding:4px 5px}.appearance .theme-labels{min-height:24px}}
 </style></head><body data-admin-theme="classic"><main>
 <section id="screen-home" class="admin-screen">
  <header><div><div class="small">Álbum de Montse · Administración privada</div><h1>Panel de administración</h1></div><a href="/album.html">← Volver al libro</a></header>
@@ -212,19 +229,19 @@ body[data-admin-theme="burgundy"] .notice.error{background:#ffe4e4;color:#6a2430
 </section>
 <section id="screen-appearance" class="admin-screen" hidden>
  <div class="screen-head"><h2>Apariencia del álbum</h2><button type="button" class="back-button" data-back-home>← Volver al panel</button></div>
- <section class="appearance" aria-labelledby="appearance-title"><h2 id="appearance-title">🎨 Prueba de diseños</h2><p class="small">Prueba los cuatro diseños. Elige un diseño, compruébalo en el libro y aplícalo cuando te guste. La vista previa no cambia el álbum familiar.</p><div class="themes" id="theme-options"><button type="button" class="theme" data-theme="romantic" aria-pressed="true">
+ <section class="appearance" aria-labelledby="appearance-title"><section class="appearance-zone appearance-catalog" aria-labelledby="appearance-title"><h2 id="appearance-title">🎨 Estilos disponibles</h2><p class="small">Elige uno de los cuatro diseños. La elección no modifica el álbum hasta que pulses «Aplicar diseño».</p><div class="themes" id="theme-options"><button type="button" class="theme" data-theme="romantic" aria-pressed="true">
  <span class="theme-mini mock" data-theme="romantic" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">❀ ♡ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">❦</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
- <span class="theme-name">🌸 Romántico scrapbook</span><span class="theme-desc">Papel antiguo, flores y recuerdos</span>
+ <span class="theme-name">🌸 Romántico scrapbook</span><span class="theme-desc">Papel antiguo, flores y recuerdos</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span><span class="theme-label selected-label" hidden>◉ SELECCIONADO PARA PROBAR</span></span>
  </button><button type="button" class="theme" data-theme="classic" aria-pressed="false">
  <span class="theme-mini mock" data-theme="classic" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">❀ ♡ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">❦</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
- <span class="theme-name">📖 Clásico elegante</span><span class="theme-desc">Marfil, elegancia y sencillez</span>
+ <span class="theme-name">📖 Clásico elegante</span><span class="theme-desc">Marfil, elegancia y sencillez</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span><span class="theme-label selected-label" hidden>◉ SELECCIONADO PARA PROBAR</span></span>
  </button><button type="button" class="theme" data-theme="floral" aria-pressed="false">
  <span class="theme-mini mock" data-theme="floral" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">❀ ♡ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">❦</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
- <span class="theme-name">🌼 Floral y alegre</span><span class="theme-desc">Acuarelas, color y luminosidad</span>
+ <span class="theme-name">🌼 Floral y alegre</span><span class="theme-desc">Acuarelas, color y luminosidad</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span><span class="theme-label selected-label" hidden>◉ SELECCIONADO PARA PROBAR</span></span>
  </button><button type="button" class="theme" data-theme="burgundy" aria-pressed="false">
  <span class="theme-mini mock" data-theme="burgundy" aria-hidden="true"><span class="mockbook"><span class="mockpage"><span class="ornament">❀ ♡ ❀</span><small>CAPÍTULO 1</small><span class="mini-heading">Así empezó todo</span><span class="ornament">❦</span></span><span class="mockpage"><span class="mockphoto"></span><span class="mocknote">Nuestra historia</span></span></span></span>
- <span class="theme-name">✨ Burdeos y dorado</span><span class="theme-desc">Burdeos profundo y detalles dorados</span>
- </button></div><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div><p class="disclaimer" id="theme-caption">Selecciona un diseño para verlo en el libro.</p><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section>
+ <span class="theme-name">✨ Burdeos y dorado</span><span class="theme-desc">Burdeos profundo y detalles dorados</span><span class="theme-labels"><span class="theme-label current-label" hidden>✓ ESTILO ACTUAL</span><span class="theme-label selected-label" hidden>◉ SELECCIONADO PARA PROBAR</span></span>
+ </button></div></section><section class="appearance-zone appearance-workspace" aria-labelledby="workspace-title"><h2 id="workspace-title">👁 Vista previa y cambio de estilo</h2><p class="small">Aquí puedes examinar el diseño seleccionado antes de aplicarlo al libro y a la administración.</p><div class="mock" id="theme-preview" data-theme="romantic"><div class="mockbook"><div class="mockpage"><div class="ornament">❀ ♡ ❀</div><small>CAPÍTULO 1</small><h3>Así empezó todo</h3><div class="ornament">❦</div></div><div class="mockpage"><div class="mockphoto" role="img" aria-label="Imagen de muestra abstracta"></div><div class="mocknote">Una historia que merece contarse</div></div></div></div><p class="disclaimer" id="theme-caption">Selecciona un diseño para verlo en el libro.</p><div class="toolbar"><button type="button" id="preview-real">👁 Vista previa en el libro</button><button type="button" id="apply-theme" class="primary">Aplicar diseño</button></div><div id="theme-status" role="status" aria-live="polite" class="small"></div></section></section>
 </section>
 </main><script>
 let chapters=[],revision=0,dirty=false;const el=id=>document.getElementById(id);
@@ -249,13 +266,24 @@ document.getElementById('theme-options').addEventListener('click',event=>{
 
 
 // La selección de un diseño no guarda nada hasta pulsar Aplicar.
-let selectedTheme='romantic';
+let selectedTheme='romantic',activeTheme=null;
+function updateThemeLabels(){
+ document.querySelectorAll('#theme-options button[data-theme]').forEach(button=>{
+  const current=button.dataset.theme===activeTheme;
+  const selected=button.dataset.theme===selectedTheme;
+  button.classList.toggle('is-active',current);
+  button.classList.toggle('is-selected',selected);
+  button.querySelector('.current-label').hidden=!current;
+  button.querySelector('.selected-label').hidden=!(selected&&!current);
+ });
+}
 function chooseTheme(theme){
  if(!Object.prototype.hasOwnProperty.call(themeNames,theme))return;
  selectedTheme=theme;
  document.getElementById('theme-preview').dataset.theme=theme;
  document.querySelectorAll('#theme-options button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===theme)));
- document.getElementById('theme-caption').textContent='Diseño seleccionado: '+themeNames[theme]+'.';
+ document.getElementById('theme-caption').textContent='Diseño seleccionado para la vista previa: '+themeNames[theme]+(activeTheme===theme?' (ESTILO ACTUAL).':'. El estilo actual sigue siendo '+(themeNames[activeTheme]||'desconocido')+'.');
+ updateThemeLabels();
 }
 // La revisión más reciente evita que una lectura retrasada revierta un diseño aplicado.
 const appearanceRevisionKey='montse-apariencia-revision-v3';
@@ -268,7 +296,7 @@ function rememberAppearance(data){
 }
 async function loadTheme(){
  const latest=lastAppearance();
- if(themeNames[latest.theme])document.body.dataset.adminTheme=latest.theme;
+ if(themeNames[latest.theme]){document.body.dataset.adminTheme=latest.theme;activeTheme=latest.theme;chooseTheme(latest.theme)}
  try{
   for(let attempt=0;attempt<6;attempt++){
    const response=await fetch('/api/apariencia?actualizar='+Date.now()+'-'+attempt,{credentials:'same-origin',cache:'no-store'});
@@ -280,7 +308,7 @@ async function loadTheme(){
     await new Promise(resolve=>setTimeout(resolve,400));
     continue;
    }
-   rememberAppearance(data);chooseTheme(data.theme);document.body.dataset.adminTheme=data.theme;
+   rememberAppearance(data);activeTheme=data.theme;chooseTheme(data.theme);document.body.dataset.adminTheme=data.theme;
    document.getElementById('theme-status').textContent='Diseño aplicado actualmente: '+themeNames[data.theme]+'. Revisión '+data.revision+'.';
    return;
   }
@@ -296,6 +324,7 @@ document.getElementById('apply-theme').onclick=async()=>{
   const response=await fetch('/api/apariencia',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:selectedTheme})});
   const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||'Error '+response.status);
   rememberAppearance(data);
+  activeTheme=data.theme;chooseTheme(data.theme);
   document.body.dataset.adminTheme=data.theme;
   document.getElementById('theme-status').textContent='Diseño aplicado: '+themeNames[data.theme]+'. Ya está activo en el libro y en la administración.';
  }catch(e){document.getElementById('theme-status').textContent='No se pudo aplicar el diseño: '+e.message}
