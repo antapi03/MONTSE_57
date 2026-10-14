@@ -110,7 +110,7 @@ const adminHtml=String.raw`<!doctype html><html lang="es"><head><meta charset="u
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#46344c;background:#f8f1eb}*{box-sizing:border-box}body{margin:0;padding:24px 14px}main{max-width:870px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}h1{color:#854c68;margin:10px 0}p{line-height:1.5}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #bda2b2;background:white;border-radius:10px;padding:10px 13px;color:#543b50}button.primary{background:#884d72;color:white;border-color:#884d72}button:disabled{opacity:.4;cursor:default}.item{background:#fff;border:1px solid #e7d7df;border-radius:15px;padding:15px;margin:12px 0;display:grid;gap:9px;box-shadow:0 3px 12px #bfa6ae16}.line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.line strong{flex:1}input,textarea{width:100%;border:1px solid #cbbac5;border-radius:8px;padding:9px;background:#fff}textarea{min-height:65px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:8px}.small{font-size:13px;color:#705f6e}.notice{padding:12px;border-radius:10px;background:#fff4dc;margin:15px 0}.error{background:#ffe1e1}.success{background:#e0f3e6}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.danger{color:#a32240}label{font-size:13px;color:#705f6e}#status{min-height:28px}@media(max-width:520px){body{padding:12px}h1{font-size:24px}}
 
 /* Selector de apariencia: vista previa local, no altera el libro ni el almacenamiento. */
-.appearance{margin:20px 0 26px;padding:18px;background:#fffaf5;border:1px solid #e7d7df;border-radius:18px;box-shadow:0 6px 20px #bfa6ae20}.appearance h2{margin:0 0 5px;color:#854c68}.appearance .themes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:16px 0}.appearance .theme{display:block;text-align:left;padding:10px;border:2px solid #e4d5da;border-radius:12px;background:white}.appearance .theme[aria-pressed="true"]{border-color:#884d72;box-shadow:0 0 0 2px #884d7220}.swatch{display:block;height:52px;border-radius:7px;margin-bottom:7px;background:linear-gradient(120deg,var(--outer),var(--paper));border:1px solid #0001}.theme-name{font-weight:650;font-size:13px}.appearance .mock{--outer:#e6cdbb;--paper:#fff5e9;--ink:#8c4f6a;--accent:#cf8f82;background:var(--outer);padding:clamp(12px,3vw,25px);border-radius:14px;transition:background .2s}.appearance .mock[data-theme="classic"]{--outer:#eee3d9;--paper:#fffaf4;--ink:#854c68;--accent:#b5a092}.appearance .mock[data-theme="floral"]{--outer:#e4eacb;--paper:#fff7e9;--ink:#9a5373;--accent:#e49c61}.appearance .mock[data-theme="burgundy"]{--outer:#56343c;--paper:#f5e9d7;--ink:#733e48;--accent:#b58c51}.mockbook{display:grid;grid-template-columns:1fr 1fr;min-height:210px;background:var(--paper);color:var(--ink);border-radius:6px 12px 12px 6px;box-shadow:0 10px 24px #321b2340;overflow:hidden;font-family:Georgia,serif}.mockpage{position:relative;padding:20px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}.mockpage:first-child{border-right:4px solid #bd9e8a55}.mockpage h3{font-size:clamp(18px,3vw,30px);font-weight:normal;margin:0}.mockpage .ornament{color:var(--accent);font-size:25px}.mockphoto{width:75%;max-width:190px;aspect-ratio:4/3;border:8px solid #fff;box-shadow:0 5px 15px #0003;transform:rotate(-4deg);background:linear-gradient(165deg,#f1bc9c 5%,#f7d2af 45%,#7e9292 46%,#547d85 75%,#c8ab86)}.mock[data-theme="classic"] .mockphoto{transform:none}.mock[data-theme="floral"] .mockphoto{transform:rotate(4deg)}.mock[data-theme="burgundy"] .mockphoto{border-color:#ead6b6}.mocknote{font-style:italic;font-size:14px}.appearance .disclaimer{font-size:12px;color:#705f6e;margin:12px 0 0}@media(max-width:620px){.appearance .themes{grid-template-columns:repeat(2,minmax(0,1fr))}.mockbook{min-height:180px}.mockpage{padding:12px 7px}.mockphoto{border-width:5px}}
+.appearance{margin:20px 0 26px;padding:18px;background:#fffaf5;border:1px solid #e7d7df;border-radius:18px;box-shadow:0 6px 20px #bfa6ae20}.appearance h2{margin:0 0 5px;color:#854c68}.appearance .themes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:16px 0}.appearance .theme{display:block;text-align:left;padding:10px;border:2px solid #e4d5da;border-radius:12px;background:white}.appearance .theme[aria-pressed="true"]{border-color:#884d72;box-shadow:0 0 0 2px #884d7220}.swatch{display:block;height:52px;border-radius:7px;margin-bottom:7px;background:linear-gradient(120deg,var(--outer),var(--paper));border:1px solid #0001}.theme-name{font-weight:650;font-size:13px}.appearance .mock{--outer:#e6cdbb;--paper:#fff5e9;--ink:#8c4f6a;--accent:#cf8f82;background:var(--outer);padding:clamp(12px,3vw,25px);border-radius:14px;transition:background .2s}.appearance .mock[data-theme="classic"]{--outer:#eee3d9;--paper:#fffaf4;--ink:#854c68;--accent:#b5a092}.appearance .mock[data-theme="floral"]{--outer:#e4eacb;--paper:#fff7e9;--ink:#9a5373;--accent:#e49c61}.appearance .mock[data-theme="burgundy"]{--outer:#56343c;--paper:#f5e9d7;--ink:#733e48;--accent:#b58c51}.mockbook{display:grid;grid-template-columns:1fr 1fr;min-height:210px;background:var(--paper);color:var(--ink);border-radius:6px 12px 12px 6px;box-shadow:0 10px 24px #321b2340;overflow:hidden;font-family:Georgia,serif}.mockpage{position:relative;padding:20px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}.mockpage:first-child{border-right:4px solid #bd9e8a55}.mockpage h3{font-size:clamp(18px,3vw,30px);font-weight:normal;margin:0}.mockpage .ornament{color:var(--accent);font-size:25px}.mockphoto{width:75%;max-width:190px;aspect-ratio:4/3;border:8px solid #fff;box-shadow:0 5px 15px #0003;transform:rotate(-4deg);background:linear-gradient(165deg,#f1bc9c 5%,#f7d2af 45%,#7e9292 46%,#547d85 75%,#c8ab86)}.mock[data-theme="classic"] .mockphoto{transform:none}.mock[data-theme="floral"] .mockphoto{transform:rotate(4deg)}.mock[data-theme="burgundy"] .mockphoto{border-color:#ead6b6}.mocknote{font-style:italic;font-size:14px}.appearance .theme-active-note{display:block;margin-top:9px;padding:9px 10px;border-radius:9px;background:var(--panel,#fff7ed);color:var(--ink,#563645);border:1px solid var(--edge,#d6a9a8);font-size:12px;font-weight:650;line-height:1.45}.appearance .theme-active-note[hidden]{display:none}.appearance .disclaimer{font-size:12px;color:#705f6e;margin:12px 0 0}@media(max-width:620px){.appearance .themes{grid-template-columns:repeat(2,minmax(0,1fr))}.mockbook{min-height:180px}.mockpage{padding:12px 7px}.mockphoto{border-width:5px}}
 
 /* Previsualización V3: diferencias visibles antes de aplicar. */
 .mock[data-theme="romantic"] .mockpage{background:repeating-linear-gradient(0deg,#fff8f0 0 4px,#fff0e9 5px 6px);border:2px dashed #d49dab}.mock[data-theme="romantic"] .mockphoto{border-bottom-width:20px;transform:rotate(-6deg)}
@@ -207,7 +207,7 @@ function showScreen(name){
  try{sessionStorage.setItem('montse-admin-seccion-v1',name)}catch{}
  window.scrollTo(0,0);
 }
-document.querySelectorAll('[data-open-screen]').forEach(button=>button.addEventListener('click',()=>showScreen(button.dataset.openScreen)));
+document.querySelectorAll('[data-open-screen]').forEach(button=>button.addEventListener('click',()=>{showScreen(button.dataset.openScreen);if(button.dataset.openScreen==='appearance')loadTheme();}));
 document.querySelectorAll('[data-back-home]').forEach(button=>button.addEventListener('click',()=>showScreen('home')));
 
 // La seleccion es solo visual; no modifica revision, capitulos ni Netlify Blobs.
@@ -221,6 +221,21 @@ document.getElementById('theme-options').addEventListener('click',event=>{
 
 // La selección de un diseño no guarda nada hasta pulsar Aplicar.
 let selectedTheme='romantic';
+let activeTheme=null;
+let activeMessage='';
+function renderActiveTheme(){
+ document.querySelectorAll('#theme-options button[data-theme]').forEach(button=>{
+  const isActive=button.dataset.theme===activeTheme;
+  button.querySelectorAll('.theme-active-note').forEach(note=>note.remove());
+  if(isActive){const note=document.createElement('span');note.className='theme-active-note';note.textContent=activeMessage||'Diseño activo: '+themeNames[activeTheme]+'.';button.appendChild(note)}
+ });
+}
+function setActiveTheme(theme,message){
+ if(!Object.prototype.hasOwnProperty.call(themeNames,theme))return;
+ activeTheme=theme;activeMessage=message||'Diseño activo: '+themeNames[theme]+'.';
+ renderActiveTheme();
+}
+
 function chooseTheme(theme){
  if(!Object.prototype.hasOwnProperty.call(themeNames,theme))return;
  selectedTheme=theme;
@@ -239,7 +254,7 @@ function rememberAppearance(data){
 }
 async function loadTheme(){
  const latest=lastAppearance();
- if(themeNames[latest.theme])document.body.dataset.adminTheme=latest.theme;
+ if(themeNames[latest.theme]){document.body.dataset.adminTheme=latest.theme;chooseTheme(latest.theme);setActiveTheme(latest.theme)}
  try{
   for(let attempt=0;attempt<6;attempt++){
    const response=await fetch('/api/apariencia?actualizar='+Date.now()+'-'+attempt,{credentials:'same-origin',cache:'no-store'});
@@ -251,8 +266,8 @@ async function loadTheme(){
     await new Promise(resolve=>setTimeout(resolve,400));
     continue;
    }
-   rememberAppearance(data);chooseTheme(data.theme);document.body.dataset.adminTheme=data.theme;
-   document.getElementById('theme-status').textContent='Diseño aplicado actualmente: '+themeNames[data.theme]+'. Revisión '+data.revision+'.';
+   rememberAppearance(data);chooseTheme(data.theme);setActiveTheme(data.theme);document.body.dataset.adminTheme=data.theme;
+   document.getElementById('theme-status').textContent='';
    return;
   }
  }catch(e){document.getElementById('theme-status').textContent='No se pudo actualizar el diseño: '+e.message}
@@ -267,8 +282,10 @@ document.getElementById('apply-theme').onclick=async()=>{
   const response=await fetch('/api/apariencia',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:selectedTheme})});
   const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||'Error '+response.status);
   rememberAppearance(data);
+  chooseTheme(data.theme);
+  setActiveTheme(data.theme,'Diseño aplicado: '+themeNames[data.theme]+'. Ya está activo en el libro y en la administración.');
   document.body.dataset.adminTheme=data.theme;
-  document.getElementById('theme-status').textContent='Diseño aplicado: '+themeNames[data.theme]+'. Ya está activo en el libro y en la administración.';
+  document.getElementById('theme-status').textContent='';
  }catch(e){document.getElementById('theme-status').textContent='No se pudo aplicar el diseño: '+e.message}
  finally{button.disabled=false}
 };
